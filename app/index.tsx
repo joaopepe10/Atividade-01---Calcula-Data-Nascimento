@@ -15,14 +15,10 @@ export default function Index() {
     const dateFormat = date.slice(0, 10);
     const [day, month, year] = dateFormat.split("/");
     const birthDay = new Date(`${year}-${month}-${day}`);
-
-    console.log("DATA: " + getAge(birthDay));
-
     return makeAlert(getAge(birthDay));
   }
 
   function makeAlert(birthDay: Number){
-
     return birthDayToday ? alert(`Parabéns ${name} pelos ${birthDay} anos de vida, muitos saúde!`)
                          : alert(`Você tem ${birthDay} anos de vida!`);
   }
