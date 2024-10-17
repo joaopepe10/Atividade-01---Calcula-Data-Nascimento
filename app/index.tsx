@@ -12,15 +12,49 @@ export default function Index() {
     if(!date){
       return alert("Data de nascimento inválida!")
     }
-    const dateFormat = date.slice(0, 10);
-    const [day, month, year] = dateFormat.split("/");
-    const birthDay = new Date(`${year}-${month}-${day}`);
-    return makeAlert(getAge(birthDay));
+    try{
+      const dateFormat = date.slice(0, 10);
+      const [day, month, year] = dateFormat.split("/");
+      const birthDay = new Date(`${year}-${month}-${day}`);
+      validateDate(birthDay);
+      
+      return makeAlert(getAge(birthDay));
+    }catch(e){
+
+    }
+    
+    
   }
 
-  function makeAlert(birthDay: Number){
+  async function sendForm() {
+    let response = await fetch('http://10.0.2.2:8080/user',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: 'Joao',
+          apartmentNumber: '122'
+        }
+        
+        )
+      }
+    );
+    console.log(response);
+  }
+
+  function makeAlert(birthDay?: Number){
     return birthDayToday ? alert(`Parabéns ${name} pelos ${birthDay} anos de vida, muitos saúde!`)
                          : alert(`Você tem ${birthDay} anos de vida!`);
+  }
+
+  function validateDate(date: Date) {
+    var now = new Date(); 
+    if(date.getFullYear() > now.getFullYear()){
+      throw new TypeError("Ano inválido!")
+    }
   }
 
 
@@ -67,7 +101,7 @@ export default function Index() {
         onChangeText={t => setDate(t)}
       />
 
-      <TouchableOpacity style={styles.button} onPress={showAge}>
+      <TouchableOpacity style={styles.button} onPress={sendForm}>
         <Text style={styles.buttonText}>Calcula idade</Text>
       </TouchableOpacity>
     
